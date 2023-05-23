@@ -37,6 +37,6 @@ referralsRouter.post("/setReferralBonus", httpSetReferralBonus);
 
 referralsRouter.post("/createReferralCode", httpCreateReferralCode);
 
-referralsRouter.post("/deleteReferralLink", httpDeleteReferralLink);
+referralsRouter.delete("/deleteReferralLink/:userName", httpDeleteReferralLink);
 
 module.exports = referralsRouter;
