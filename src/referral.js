@@ -235,9 +235,9 @@ module.exports = class Referral {
   /**
    * @dev Used to delete a user referral link
    */
-  async deleteUserReferralLink(userName) {
-    let userAccount = await account.findOne({ user: sender });
-    delete userAccount.referralLinks[`${userName}`];
+  async deleteUserReferralLink(user) {
+    let userAccount = await account.findOne({ user: user.sender });
+    delete userAccount.referralLinks[`${user.userName}`];
   }
 
   /**
