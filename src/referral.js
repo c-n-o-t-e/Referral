@@ -72,7 +72,7 @@ module.exports = class Referral {
   }
 
   async createReferralCode(referralDetails) {
-    const userNewReferralLink = `https://overlay.market/referral/${referralDetails.username}`; // Hash of referralDetails.username as part of user referral code
+    const userNewReferralLink = `https://app.overlay.market/#/markets?ref=${referralDetails.username}`; // Hash of referralDetails.username as part of user referral code
     const data = await referralProgramData.findOne({ RPD: "RPD" });
 
     // add referralDetails.username to DB for all users
@@ -130,6 +130,7 @@ module.exports = class Referral {
     let referrerAccount = await account.findOne({
       user: referralDetails.referrer,
     });
+
     let userAccount = await account.findOne({ user: referralDetails.sender });
 
     if (await this.hasReferrer(referralDetails.sender)) {
@@ -225,10 +226,18 @@ module.exports = class Referral {
    * @dev Used to check if user name already exist or not
    * in the referral program
    */
-  async checkForUsernameInProgram(userName) {
+  async checkForUsernameInProgram(userName, sender) {
     const data = await referralProgramData.findOne({ RPD: "RPD" });
     let result = await data.users[`${userName}`];
     return result != undefined;
+  }
+
+  /**
+   * @dev Used to delete a user referral link
+   */
+  async deleteUserReferralLink(userName) {
+    let userAccount = await account.findOne({ user: sender });
+    delete userAccount.referralLinks[`${userName}`];
   }
 
   /**
