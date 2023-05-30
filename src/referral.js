@@ -91,7 +91,9 @@ module.exports = class Referral {
     const data = await referralProgramData.findOne({ RPD: "RPD" });
 
     // add referralDetails.username to DB for all users
-    const obj = await this.getObject(data.users, referralDetails.username, [
+    const object = data.users["users"] != undefined ? {} : data.users;
+
+    const obj = await this.getObject(object, referralDetails.username, [
       userNewReferralLink,
       referralDetails.sender,
     ]);
@@ -104,7 +106,12 @@ module.exports = class Referral {
       let userNewReferral = {};
       userNewReferral[referralDetails.username] = userNewReferralLink;
 
-      await this.create(referralDetails.sender, "", 0, userNewReferral);
+      await this.create(
+        referralDetails.sender,
+        "",
+        this.getDateInSeconds(),
+        userNewReferral
+      );
     } else if (
       senderAccount != null &&
       senderAccount.referralLinks["none"] != undefined
